@@ -3,7 +3,7 @@ version: '3'
 services:
   superbrain-gamehub-go:
     build:
-      context: superbraingamehub/ 
+      context: api/ 
     ports:
       - "8080:8080"
   postgres:

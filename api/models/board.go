@@ -52,3 +52,7 @@ func (board Board) ToGinResponse() gin.H {
 func (board Board) GetTiles() [][]bool {
 	return board.tiles
 }
+
+func (board Board) GetLength() int {
+	return board.length
+}
