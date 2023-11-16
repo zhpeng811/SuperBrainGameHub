@@ -2,7 +2,9 @@
 
 
 ## Restart docker compose
-docker-compose up --build --force-recreate --no-deps -d
+docker-compose up -d --build --force-recreate --no-deps
+
+docker-compose up -d --build superbrain-gamehub-go
 
 ## Test Commands
 curl http://localhost:8080/ping

@@ -3,9 +3,9 @@ package models
 import "github.com/gin-gonic/gin"
 
 type Board struct {
-	length int
-	width  int
-	tiles  [][]bool
+	Length int
+	Width  int
+	Tiles  [][]bool
 }
 
 func NewBoard(length, width int) *Board {
@@ -18,41 +18,49 @@ func NewBoard(length, width int) *Board {
 		}
 	}
 	return &Board{
-		length: length,
-		width:  width,
-		tiles:  tiles,
+		Length: length,
+		Width:  width,
+		Tiles:  tiles,
+	}
+}
+
+func NewBoardFromTiles(tiles [][]bool) *Board {
+	return &Board{
+		Length: len(tiles),
+		Width:  len(tiles[0]),
+		Tiles:  tiles,
 	}
 }
 
 func (board Board) RevertNearbyTiles(row, col int) {
-	board.tiles[row][col] = !board.tiles[row][col]
+	board.Tiles[row][col] = !board.Tiles[row][col]
 	if row > 0 {
-		board.tiles[row-1][col] = !board.tiles[row-1][col]
+		board.Tiles[row-1][col] = !board.Tiles[row-1][col]
 	}
-	if row < board.length-1 {
-		board.tiles[row+1][col] = !board.tiles[row+1][col]
+	if row < board.Length-1 {
+		board.Tiles[row+1][col] = !board.Tiles[row+1][col]
 	}
 	if col > 0 {
-		board.tiles[row][col-1] = !board.tiles[row][col-1]
+		board.Tiles[row][col-1] = !board.Tiles[row][col-1]
 	}
-	if col < board.width-1 {
-		board.tiles[row][col+1] = !board.tiles[row][col+1]
+	if col < board.Width-1 {
+		board.Tiles[row][col+1] = !board.Tiles[row][col+1]
 	}
 }
 
 func (board Board) ToGinResponse() gin.H {
 	return gin.H{
-		"length": board.length,
-		"width":  board.width,
-		"tiles":  board.tiles,
+		"length": board.Length,
+		"width":  board.Width,
+		"tiles":  board.Tiles,
 	}
 }
 
 // ===== Getters =====
 func (board Board) GetTiles() [][]bool {
-	return board.tiles
+	return board.Tiles
 }
 
 func (board Board) GetLength() int {
-	return board.length
+	return board.Length
 }

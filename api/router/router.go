@@ -17,6 +17,7 @@ func SetupRouter() *gin.Engine {
 	r.POST("/items", api.CreateItem)
 
 	// Black-White Tile
-	r.POST("/blackWhiteTile", api.IntializeGame)
+	r.POST("/blackWhiteTile/initialize", api.IntializeGame)
+	r.POST("/blackWhiteTile/handleClick", api.HandleClick)
 	return r
 }

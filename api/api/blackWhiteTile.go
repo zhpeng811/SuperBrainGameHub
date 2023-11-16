@@ -36,3 +36,22 @@ func IntializeGame(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, board.ToGinResponse())
 }
+
+func HandleClick(c *gin.Context) {
+	type RequestBody struct {
+		Tiles [][]bool `json:"tiles" binding:"required"`
+		Row   int      `json:"row" binding:"required"`
+		Col   int      `json:"col" binding:"required"`
+	}
+	var requestBody RequestBody
+
+	if err := c.ShouldBindJSON(&requestBody); err != nil {
+		// handle error
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	board := models.NewBoardFromTiles(requestBody.Tiles)
+	board.RevertNearbyTiles(requestBody.Row, requestBody.Col)
+	c.JSON(http.StatusOK, board.ToGinResponse())
+}
