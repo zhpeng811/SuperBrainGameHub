@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback, KeyboardEvent, useRef } from 'react';
+import React, { useState, useEffect, useCallback, KeyboardEvent, useRef } from 'react';
 
 interface Tile {
   value: number;
@@ -33,7 +33,12 @@ export default function DigitalLabyrinthGame() {
   const [showLines, setShowLines] = useState(false);
 
   // Add refs to track tile elements
-  const tileRefs = useRef<(HTMLDivElement | null)[]>(Array(TOTAL_CELLS).fill(null));
+  const tileRefs = useRef<Array<HTMLDivElement | null>>(Array(TOTAL_CELLS).fill(null));
+  
+  // Create a callback function for the ref
+  const setTileRef = useCallback((el: HTMLDivElement | null, index: number) => {
+    tileRefs.current[index] = el;
+  }, []);
 
   // Initialize the game
   const initializeGame = useCallback(() => {
@@ -741,7 +746,7 @@ export default function DigitalLabyrinthGame() {
           {grid.map((tile, index) => (
             <div 
               key={index}
-              ref={el => tileRefs.current[index] = el}
+              ref={el => setTileRef(el, index)}
               className={`flex h-10 w-10 items-center justify-center rounded-md text-sm font-bold
                 ${selectedTile === index ? 'ring-2 ring-yellow-400 ring-offset-2 ring-offset-gray-100 dark:ring-offset-gray-700' : ''}
                 ${tile.revealed 
@@ -755,10 +760,18 @@ export default function DigitalLabyrinthGame() {
                     : 'bg-gray-300 dark:bg-gray-600 hover:bg-gray-400 dark:hover:bg-gray-500'
                 }
                 ${isComplete && !isCorrect && !tile.revealed ? 'bg-red-500 text-white' : ''}
+                ${(tile.revealed || isComplete) ? 'cursor-not-allowed' : 'cursor-pointer'}
               `}
-              onClick={() => handleTileInput(index)}
-              onDoubleClick={() => handleTileClear(index)}
-              disabled={tile.revealed || isComplete}
+              onClick={() => {
+                if (!tile.revealed && !isComplete) {
+                  handleTileInput(index);
+                }
+              }}
+              onDoubleClick={() => {
+                if (!tile.revealed && !isComplete) {
+                  handleTileClear(index);
+                }
+              }}
             >
               {tile.revealed ? tile.value : tile.userValue || ''}
             </div>
