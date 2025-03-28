@@ -17,6 +17,13 @@ export function withBasePath(path: string): string {
   }
   
   const basePath = getBasePath();
+  
+  // For client-side navigation, we need to make sure we're not adding the basePath twice
+  // If the URL already starts with the basePath, don't add it again
+  if (basePath && path.startsWith(basePath)) {
+    return path;
+  }
+  
   // Ensure we don't have double slashes
   const normalizedPath = path.startsWith('/') ? path : `/${path}`;
   
