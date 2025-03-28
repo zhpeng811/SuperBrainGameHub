@@ -34,6 +34,8 @@ export default function DigitalLabyrinthGame() {
 
   // Add refs to track tile elements
   const tileRefs = useRef<Array<HTMLDivElement | null>>(Array(TOTAL_CELLS).fill(null));
+  // Add a ref for the input element
+  const inputRef = useRef<HTMLInputElement>(null);
   
   // Create a callback function for the ref
   const setTileRef = useCallback((el: HTMLDivElement | null, index: number) => {
@@ -682,6 +684,13 @@ export default function DigitalLabyrinthGame() {
     return connections;
   };
 
+  // Focus the input element when a tile is selected
+  useEffect(() => {
+    if (selectedTile !== null && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [selectedTile]);
+
   return (
     <div className="flex flex-col items-center">
       <div className="mb-6 flex flex-col items-center gap-4">
@@ -823,12 +832,12 @@ export default function DigitalLabyrinthGame() {
       {selectedTile !== null && (
         <div className="mt-4 flex items-center gap-2">
           <input
+            ref={inputRef}
             type="text"
             value={inputValue}
             onChange={handleInputChange}
             onKeyDown={handleKeyPress}
             placeholder="Enter number (1-81)"
-            autoFocus
             className="rounded-md border border-gray-300 px-3 py-2 text-center text-lg font-medium"
           />
           <button
@@ -851,10 +860,17 @@ export default function DigitalLabyrinthGame() {
         </div>
       )}
       
-      <div className="mt-6 text-center text-gray-600 dark:text-gray-400">
-        <p>Connect numbers 1 to 81 by filling in missing numbers.</p>
-        <p>Each number must be adjacent to the next number in sequence.</p>
-        <p>Connections can be horizontal, vertical, or diagonal.</p>
+      <div className="mt-8 rounded-lg bg-blue-50 p-4 dark:bg-blue-900/20">
+        <h3 className="mb-2 text-lg font-semibold text-gray-900 dark:text-white">How to Play</h3>
+        <ul className="list-inside list-disc space-y-1 text-gray-700 dark:text-gray-300">
+          <li>Connect numbers 1 to 81 by filling in missing numbers</li>
+          <li>Each number must be adjacent to the next number in sequence</li>
+          <li>Connections can be horizontal, vertical, or diagonal</li>
+          <li>Click on empty tiles to enter a number</li>
+          <li>Double-click to clear an entry</li>
+          <li>Toggle &quot;Show correctness&quot; to validate your entries</li>
+          <li>Toggle &quot;Show connections&quot; to see sequential number paths</li>
+        </ul>
       </div>
     </div>
   );
