@@ -1,5 +1,5 @@
-import Link from 'next/link';
 import { ReactNode } from 'react';
+import BasePathLink from '@/components/ui/BasePathLink';
 
 export default function GamesLayout({ children }: { children: ReactNode }) {
   return (
@@ -7,16 +7,16 @@ export default function GamesLayout({ children }: { children: ReactNode }) {
       <header className="border-b border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-950">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
-            <Link href="/" className="text-xl font-bold text-gray-900 dark:text-white">
+            <BasePathLink href="/" className="text-xl font-bold text-gray-900 dark:text-white">
               Super Brain Game Hub
-            </Link>
+            </BasePathLink>
             <nav>
-              <Link
+              <BasePathLink
                 href="/"
                 className="rounded-md px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-800"
               >
                 Back to Games
-              </Link>
+              </BasePathLink>
             </nav>
           </div>
         </div>
