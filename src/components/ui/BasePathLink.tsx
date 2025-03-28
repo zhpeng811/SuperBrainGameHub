@@ -1,5 +1,4 @@
 import { default as NextLink } from 'next/link';
-import { withBasePath } from '@/utils/path';
 import { ComponentProps, PropsWithChildren } from 'react';
 
 type BasePathLinkProps = PropsWithChildren<{
@@ -15,10 +14,8 @@ export default function BasePathLink({
   children,
   ...props
 }: BasePathLinkProps) {
-  // Only process internal links (not starting with http/https)
-  const processedHref = typeof href === 'string' && !href.startsWith('http') 
-    ? withBasePath(href) 
-    : href;
-  
-  return <NextLink href={processedHref} {...props}>{children}</NextLink>;
+  // When using Next.js Link, we should NOT manually add the basePath
+  // Next.js will handle adding the basePath automatically based on the config
+  // This prevents double-prefixing issues with GitHub Pages
+  return <NextLink href={href} {...props}>{children}</NextLink>;
 }
