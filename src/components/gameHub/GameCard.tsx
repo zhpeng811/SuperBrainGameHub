@@ -1,5 +1,5 @@
-import Image from 'next/image';
-import Link from 'next/link';
+import BasePathLink from '@/components/ui/BasePathLink';
+import BasePathImage from '@/components/ui/BasePathImage';
 
 export interface GameCardProps {
   id: string;
@@ -11,11 +11,11 @@ export interface GameCardProps {
 
 export default function GameCard({ title, description, imageUrl, link }: GameCardProps) {
   return (
-    <Link href={link} className="group">
+    <BasePathLink href={link} className="group">
       <div className="relative flex flex-col overflow-hidden rounded-lg border border-gray-200 bg-white shadow-md transition-all hover:shadow-lg dark:border-gray-800 dark:bg-gray-950">
         <div className="relative aspect-square w-full overflow-hidden bg-blue-100 dark:bg-blue-900/30">
           {imageUrl && imageUrl !== '/placeholder-game.jpg' ? (
-            <Image
+            <BasePathImage
               src={imageUrl}
               alt={title}
               fill
@@ -41,6 +41,6 @@ export default function GameCard({ title, description, imageUrl, link }: GameCar
           </div>
         </div>
       </div>
-    </Link>
+    </BasePathLink>
   );
 } 
