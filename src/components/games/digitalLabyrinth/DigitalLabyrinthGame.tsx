@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useCallback, KeyboardEvent, useRef } from 'react';
+import { useTranslations } from 'next-intl';
 
 interface Tile {
   value: number;
@@ -19,6 +20,7 @@ interface Cell {
 }
 
 export default function DigitalLabyrinthGame() {
+  const t = useTranslations('digitalLabyrinth');
   const GRID_SIZE = 9;
   const TOTAL_CELLS = GRID_SIZE * GRID_SIZE;
   const INITIAL_REVEALED = 30;
@@ -284,6 +286,10 @@ export default function DigitalLabyrinthGame() {
     // If a tile is already selected, just switch the selection
     setSelectedTile(index);
     setInputValue('');
+    setErrorMessage(null);
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
   };
 
   // Handle double click to clear a tile value
@@ -303,6 +309,16 @@ export default function DigitalLabyrinthGame() {
     
     // Clear any error messages
     setErrorMessage(null);
+    
+    // If immediate validation is on, check again
+    if (immediateValidation) {
+      setTimeout(() => {
+        const allFilled = allTilesFilled();
+        if (allFilled) {
+          submitAnswer();
+        }
+      }, 10);
+    }
   };
 
   // Handle typed input for a tile
@@ -324,30 +340,63 @@ export default function DigitalLabyrinthGame() {
 
   // Submit the typed number
   const submitNumber = () => {
-    if (selectedTile === null || !inputValue) return;
+    if (selectedTile === null) return;
     
-    const number = parseInt(inputValue, 10);
+    // Check if the input is a valid number
+    const numValue = parseInt(inputValue);
+    if (isNaN(numValue) || numValue < 1 || numValue > TOTAL_CELLS) {
+      setErrorMessage(t('invalidInput'));
+      return;
+    }
     
-    // Validate the number is in the valid range
-    if (number >= 1 && number <= TOTAL_CELLS) {
-      const newGrid = [...grid];
-      const correctValue = newGrid[selectedTile].value;
-      
-      newGrid[selectedTile] = {
-        ...newGrid[selectedTile],
-        userValue: number,
-        isCorrect: immediateValidation ? number === correctValue : undefined
+    // Check if this number is already used elsewhere
+    const numberExists = grid.some(tile => 
+      (tile.revealed && tile.value === numValue) || 
+      (!tile.revealed && tile.userValue === numValue)
+    );
+    
+    if (numberExists) {
+      setErrorMessage(t('tileOccupied'));
+      return;
+    }
+    
+    // If immediate validation is on, also check if the number connects sequentially
+    if (immediateValidation) {
+      const updatedGrid = [...grid];
+      updatedGrid[selectedTile] = {
+        ...updatedGrid[selectedTile],
+        userValue: numValue
       };
       
-      setGrid(newGrid);
-      // Keep the current tile selected instead of setting to null
-      setInputValue('');
-      
-      // Clear any error messages when the user makes progress
+      const connections = findTileConnections(updatedGrid, selectedTile);
+      if (!connections.isValid) {
+        setErrorMessage(t('notSequential'));
+        return;
+      }
+    }
+    
+    // Apply the number
+    setGrid(prev => {
+      const updatedGrid = [...prev];
+      updatedGrid[selectedTile] = {
+        ...updatedGrid[selectedTile],
+        userValue: numValue
+      };
+      return updatedGrid;
+    });
+    
+    setInputValue('');
+    setSelectedTile(null);
       setErrorMessage(null);
-    } else {
-      // Alert the user if the number is invalid
-      alert(`Please enter a number between 1 and ${TOTAL_CELLS}`);
+    
+    // If immediate validation is on, check if the puzzle is complete
+    if (immediateValidation) {
+      setTimeout(() => {
+        const allFilled = allTilesFilled();
+        if (allFilled) {
+          submitAnswer();
+        }
+      }, 10);
     }
   };
 
@@ -357,7 +406,7 @@ export default function DigitalLabyrinthGame() {
     const allFilled = grid.every(tile => tile.revealed || tile.userValue !== null);
     
     if (!allFilled) {
-      setErrorMessage("Please fill in all empty tiles before submitting your answer.");
+      setErrorMessage(t('fillAllTiles'));
       return;
     }
     
@@ -377,7 +426,7 @@ export default function DigitalLabyrinthGame() {
 
   // Toggle immediate validation
   const toggleValidation = () => {
-    setImmediateValidation(!immediateValidation);
+    setImmediateValidation(prev => !prev);
     
     // Update existing tiles if necessary
     if (!immediateValidation) {
@@ -523,167 +572,6 @@ export default function DigitalLabyrinthGame() {
     };
   }, [selectedTile, grid, GRID_SIZE, isComplete]);
 
-  // Add a function to check if two numbers are sequential
-  const areSequential = (a: number, b: number) => {
-    return Math.abs(a - b) === 1;
-  };
-
-  // Update the findConnections function to work with the feedback feature
-  const findConnections = () => {
-    const connections: [number, number][] = [];
-    
-    // Check horizontal and vertical adjacencies
-    for (let i = 0; i < grid.length; i++) {
-      const x = i % GRID_SIZE;
-      const y = Math.floor(i / GRID_SIZE);
-      
-      // Get the current tile's actual value (whether revealed or user input)
-      const currentValue = grid[i].revealed ? grid[i].value : grid[i].userValue;
-      
-      // Skip if the tile is empty (no revealed value and no user input)
-      if (currentValue === null) continue;
-      
-      // For user-filled tiles with immediate validation on, only consider correct tiles
-      if (!grid[i].revealed && grid[i].userValue !== null && immediateValidation && grid[i].userValue !== grid[i].value) {
-        continue;
-      }
-      
-      // Check right neighbor
-      if (x < GRID_SIZE - 1) {
-        const rightIdx = i + 1;
-        const rightValue = grid[rightIdx].revealed ? grid[rightIdx].value : grid[rightIdx].userValue;
-        
-        // Skip if the right tile is empty
-        if (rightValue !== null) {
-          // For user-filled tiles with immediate validation on, only consider correct tiles
-          if (!(
-            !grid[rightIdx].revealed && 
-            grid[rightIdx].userValue !== null && 
-            immediateValidation && 
-            grid[rightIdx].userValue !== grid[rightIdx].value
-          )) {
-            // Connect if the values are sequential
-            if (areSequential(currentValue, rightValue)) {
-              connections.push([i, rightIdx]);
-            }
-          }
-        }
-      }
-      
-      // Check bottom neighbor
-      if (y < GRID_SIZE - 1) {
-        const bottomIdx = i + GRID_SIZE;
-        const bottomValue = grid[bottomIdx].revealed ? grid[bottomIdx].value : grid[bottomIdx].userValue;
-        
-        // Skip if the bottom tile is empty
-        if (bottomValue !== null) {
-          // For user-filled tiles with immediate validation on, only consider correct tiles
-          if (!(
-            !grid[bottomIdx].revealed && 
-            grid[bottomIdx].userValue !== null && 
-            immediateValidation && 
-            grid[bottomIdx].userValue !== grid[bottomIdx].value
-          )) {
-            // Connect if the values are sequential
-            if (areSequential(currentValue, bottomValue)) {
-              connections.push([i, bottomIdx]);
-            }
-          }
-        }
-      }
-      
-      // Check diagonal bottom-right neighbor
-      if (x < GRID_SIZE - 1 && y < GRID_SIZE - 1) {
-        const diagIdx = i + GRID_SIZE + 1;
-        const diagValue = grid[diagIdx].revealed ? grid[diagIdx].value : grid[diagIdx].userValue;
-        
-        // Skip if the diagonal tile is empty
-        if (diagValue !== null) {
-          // For user-filled tiles with immediate validation on, only consider correct tiles
-          if (!(
-            !grid[diagIdx].revealed && 
-            grid[diagIdx].userValue !== null && 
-            immediateValidation && 
-            grid[diagIdx].userValue !== grid[diagIdx].value
-          )) {
-            // Connect if the values are sequential
-            if (areSequential(currentValue, diagValue)) {
-              connections.push([i, diagIdx]);
-            }
-          }
-        }
-      }
-      
-      // Check diagonal bottom-left neighbor
-      if (x > 0 && y < GRID_SIZE - 1) {
-        const diagIdx = i + GRID_SIZE - 1;
-        const diagValue = grid[diagIdx].revealed ? grid[diagIdx].value : grid[diagIdx].userValue;
-        
-        // Skip if the diagonal tile is empty
-        if (diagValue !== null) {
-          // For user-filled tiles with immediate validation on, only consider correct tiles
-          if (!(
-            !grid[diagIdx].revealed && 
-            grid[diagIdx].userValue !== null && 
-            immediateValidation && 
-            grid[diagIdx].userValue !== grid[diagIdx].value
-          )) {
-            // Connect if the values are sequential
-            if (areSequential(currentValue, diagValue)) {
-              connections.push([i, diagIdx]);
-            }
-          }
-        }
-      }
-      
-      // Check diagonal top-right neighbor
-      if (x < GRID_SIZE - 1 && y > 0) {
-        const diagIdx = i - GRID_SIZE + 1;
-        const diagValue = grid[diagIdx].revealed ? grid[diagIdx].value : grid[diagIdx].userValue;
-        
-        // Skip if the diagonal tile is empty
-        if (diagValue !== null) {
-          // For user-filled tiles with immediate validation on, only consider correct tiles
-          if (!(
-            !grid[diagIdx].revealed && 
-            grid[diagIdx].userValue !== null && 
-            immediateValidation && 
-            grid[diagIdx].userValue !== grid[diagIdx].value
-          )) {
-            // Connect if the values are sequential
-            if (areSequential(currentValue, diagValue)) {
-              connections.push([i, diagIdx]);
-            }
-          }
-        }
-      }
-      
-      // Check diagonal top-left neighbor
-      if (x > 0 && y > 0) {
-        const diagIdx = i - GRID_SIZE - 1;
-        const diagValue = grid[diagIdx].revealed ? grid[diagIdx].value : grid[diagIdx].userValue;
-        
-        // Skip if the diagonal tile is empty
-        if (diagValue !== null) {
-          // For user-filled tiles with immediate validation on, only consider correct tiles
-          if (!(
-            !grid[diagIdx].revealed && 
-            grid[diagIdx].userValue !== null && 
-            immediateValidation && 
-            grid[diagIdx].userValue !== grid[diagIdx].value
-          )) {
-            // Connect if the values are sequential
-            if (areSequential(currentValue, diagValue)) {
-              connections.push([i, diagIdx]);
-            }
-          }
-        }
-      }
-    }
-    
-    return connections;
-  };
-
   // Focus the input element when a tile is selected
   useEffect(() => {
     if (selectedTile !== null && inputRef.current) {
@@ -691,185 +579,245 @@ export default function DigitalLabyrinthGame() {
     }
   }, [selectedTile]);
 
+  // Additional helper functions related to connections and validation
+  
+  const findTileConnections = (grid: Tile[], index: number) => {
+    const tile = grid[index];
+    
+    // Get the tile value (either revealed value or user input)
+    const tileValue = tile.revealed ? tile.value : tile.userValue;
+    
+    if (tileValue === null) return { isValid: false, connections: [] };
+    
+    // Look for neighboring tiles with values +1 or -1 from current value
+    const prevValue = tileValue - 1;
+    const nextValue = tileValue + 1;
+    
+    const connections: number[] = [];
+    let isValid = false;
+    
+    // Check all 8 directions around the tile
+    const directions = [
+      { dx: -1, dy: -1 }, // top-left
+      { dx: 0, dy: -1 },  // top
+      { dx: 1, dy: -1 },  // top-right
+      { dx: -1, dy: 0 },  // left
+      { dx: 1, dy: 0 },   // right
+      { dx: -1, dy: 1 },  // bottom-left
+      { dx: 0, dy: 1 },   // bottom
+      { dx: 1, dy: 1 }    // bottom-right
+    ];
+    
+    // Calculate the current tile's x and y position
+    const x = index % GRID_SIZE;
+    const y = Math.floor(index / GRID_SIZE);
+    
+    for (const dir of directions) {
+      const newX = x + dir.dx;
+      const newY = y + dir.dy;
+      
+      // Skip if out of bounds
+      if (newX < 0 || newX >= GRID_SIZE || newY < 0 || newY >= GRID_SIZE) continue;
+      
+      const neighborIndex = newY * GRID_SIZE + newX;
+      const neighbor = grid[neighborIndex];
+      
+      // Skip empty tiles
+      if (!neighbor.revealed && neighbor.userValue === null) continue;
+      
+      const neighborValue = neighbor.revealed ? neighbor.value : neighbor.userValue;
+      
+      if (neighborValue === prevValue || neighborValue === nextValue) {
+        connections.push(neighborIndex);
+        isValid = true;
+      }
+    }
+    
+    return { isValid, connections };
+  };
+
+  const renderGameBoard = () => {
+    if (!grid || grid.length === 0) return null;
+
   return (
-    <div className="flex flex-col items-center">
-      <div className="mb-6 flex flex-col items-center gap-4">
-        <div className="flex items-center gap-4">
-          <button
-            onClick={handleNewGame}
-            className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
-          >
-            New Game
-          </button>
-          <div className="flex items-center gap-2">
-            <button
-              type="button"
-              onClick={toggleValidation}
-              className={`relative inline-flex h-6 w-11 items-center rounded-full ${immediateValidation ? 'bg-blue-600' : 'bg-gray-200'}`}
-            >
-              <span className="sr-only">Show correctness</span>
-              <span
-                className={`${immediateValidation ? 'translate-x-6' : 'translate-x-1'} inline-block h-4 w-4 transform rounded-full bg-white transition`}
-              />
-            </button>
-            <label className="text-sm text-gray-700 dark:text-gray-300">
-              Show correctness
-            </label>
-          </div>
-          <div className="flex items-center gap-2">
-            <button
-              type="button"
-              onClick={() => setShowLines(!showLines)}
-              className={`relative inline-flex h-6 w-11 items-center rounded-full ${showLines ? 'bg-blue-600' : 'bg-gray-200'}`}
-            >
-              <span className="sr-only">Show connections</span>
-              <span
-                className={`${showLines ? 'translate-x-6' : 'translate-x-1'} inline-block h-4 w-4 transform rounded-full bg-white transition`}
-              />
-            </button>
-            <label className="text-sm text-gray-700 dark:text-gray-300">
-              Show connections
-            </label>
-          </div>
-        </div>
-      </div>
-      
-      {isComplete && (
-        <div className={`mb-4 rounded-md p-3 text-center ${isCorrect ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
-          <p className="font-bold">
-            {isCorrect 
-              ? 'Congratulations! You completed the Digital Labyrinth!'
-              : 'Your solution is not correct. Try again!'}
-          </p>
-        </div>
-      )}
-      
-      {errorMessage && (
-        <div className="mb-4 rounded-md bg-yellow-100 p-3 text-center text-yellow-800">
-          <p>{errorMessage}</p>
-        </div>
-      )}
-      
-      <div className="relative">
-        <div className="grid grid-cols-9 gap-1">
-          {grid.map((tile, index) => (
+      <div 
+        className="grid grid-cols-9 gap-1 mb-6"
+      >
+        {grid.map((tile, index) => {
+          // Find connections for this tile if needed
+          const connections = showLines ? findTileConnections(grid, index) : { isValid: false, connections: [] };
+          
+          return (
             <div 
               key={index}
               ref={el => setTileRef(el, index)}
-              className={`flex h-10 w-10 items-center justify-center rounded-md text-sm font-bold
-                ${selectedTile === index ? 'ring-2 ring-yellow-400 ring-offset-2 ring-offset-gray-100 dark:ring-offset-gray-700' : ''}
-                ${tile.revealed 
-                  ? 'bg-blue-500 text-white' 
-                  : tile.userValue 
-                    ? tile.isCorrect === undefined
-                      ? 'bg-orange-500 text-white' // Uncertainty (validation off)
-                      : tile.isCorrect
-                        ? 'bg-green-500 text-white' // Correct answer
-                        : 'bg-red-500 text-white'   // Wrong answer
-                    : 'bg-gray-300 dark:bg-gray-600 hover:bg-gray-400 dark:hover:bg-gray-500'
-                }
-                ${isComplete && !isCorrect && !tile.revealed ? 'bg-red-500 text-white' : ''}
-                ${(tile.revealed || isComplete) ? 'cursor-not-allowed' : 'cursor-pointer'}
-              `}
+              className={`relative flex items-center justify-center rounded border text-lg font-bold h-10 w-10 ${
+                selectedTile === index
+                  ? 'border-blue-500 bg-blue-50'
+                  : tile.revealed
+                  ? 'border-gray-300 bg-gray-200 text-gray-900'
+                  : tile.isCorrect === true
+                  ? 'border-green-200 bg-green-50 text-green-900'
+                  : tile.isCorrect === false
+                  ? 'border-red-200 bg-red-50 text-red-900'
+                  : 'cursor-pointer border-gray-200 bg-white hover:bg-gray-50'
+              }`}
               onClick={() => {
                 if (!tile.revealed && !isComplete) {
                   handleTileInput(index);
                 }
               }}
-              onDoubleClick={() => {
-                if (!tile.revealed && !isComplete) {
-                  handleTileClear(index);
-                }
-              }}
             >
-              {tile.revealed ? tile.value : tile.userValue || ''}
-            </div>
-          ))}
-        </div>
-        
-        {/* Separate overlay for the lines */}
-        {showLines && (
-          <div 
-            className="absolute inset-0 pointer-events-none"
-            style={{ zIndex: 10 }}
-          >
-            <svg className="w-full h-full">
-              {findConnections().map(([start, end], idx) => {
-                const startEl = tileRefs.current[start];
-                const endEl = tileRefs.current[end];
+              {tile.revealed ? tile.value : tile.userValue}
+              
+              {/* Show connection lines if enabled */}
+              {showLines && connections.connections.map(connectedIndex => {
+                // Don't draw lines for empty tiles
+                if (tile.revealed === false && tile.userValue === null) return null;
                 
-                if (!startEl || !endEl) return null;
+                // Get the positions of both tiles
+                const thisEl = tileRefs.current[index];
+                const connectedEl = tileRefs.current[connectedIndex];
                 
-                const startRect = startEl.getBoundingClientRect();
-                const endRect = endEl.getBoundingClientRect();
-                const containerRect = startEl.parentElement?.parentElement?.getBoundingClientRect();
+                if (!thisEl || !connectedEl) return null;
                 
-                if (!containerRect) return null;
+                // Get the center points
+                const thisRect = thisEl.getBoundingClientRect();
+                const connectedRect = connectedEl.getBoundingClientRect();
                 
-                // Calculate center points relative to the container
-                const startX = startRect.left + startRect.width / 2 - containerRect.left;
-                const startY = startRect.top + startRect.height / 2 - containerRect.top;
-                const endX = endRect.left + endRect.width / 2 - containerRect.left;
-                const endY = endRect.top + endRect.height / 2 - containerRect.top;
+                // Calculate relative position
+                const thisX = thisRect.left + thisRect.width/2;
+                const thisY = thisRect.top + thisRect.height/2;
+                const connectedX = connectedRect.left + connectedRect.width/2;
+                const connectedY = connectedRect.top + connectedRect.height/2;
                 
+                // Calculate line properties relative to this tile's position
+                const dx = connectedX - thisX;
+                const dy = connectedY - thisY;
+                const length = Math.sqrt(dx*dx + dy*dy);
+                const angle = Math.atan2(dy, dx) * 180 / Math.PI;
+                
+                // Get the values to determine if they're sequential
+                const thisValue = tile.revealed ? tile.value : tile.userValue;
+                const connectedValue = grid[connectedIndex].revealed 
+                  ? grid[connectedIndex].value 
+                  : grid[connectedIndex].userValue;
+                
+                // Only draw lines between sequential numbers
+                if (thisValue !== null && connectedValue !== null && 
+                    (thisValue === connectedValue + 1 || thisValue === connectedValue - 1)) {
                 return (
-                  <line 
-                    key={`line-${idx}`}
-                    x1={startX} 
-                    y1={startY} 
-                    x2={endX} 
-                    y2={endY}
-                    stroke="black" 
-                    strokeWidth="3" 
-                  />
-                );
+                    <div 
+                      key={`line-${index}-${connectedIndex}`}
+                      className="absolute pointer-events-none"
+                      style={{
+                        width: `${length}px`,
+                        height: '2px',
+                        backgroundColor: 'rgba(59, 130, 246, 0.5)',
+                        transformOrigin: '0 50%',
+                        transform: `rotate(${angle}deg)`,
+                        zIndex: 10,
+                        left: '50%',
+                        top: '50%'
+                      }}
+                    />
+                  );
+                }
+                
+                return null;
               })}
-            </svg>
           </div>
-        )}
+          );
+        })}
+      </div>
+    );
+  };
+
+  return (
+    <div className="flex flex-col items-center">
+      <div className="mb-4 flex gap-2">
+        <button
+          onClick={handleNewGame}
+          className="rounded bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
+        >
+          {t('newGame')}
+        </button>
+        
+        <button
+          onClick={() => setShowLines(!showLines)}
+          className="rounded px-4 py-2 text-sm font-medium bg-gray-100 hover:bg-gray-200 text-gray-700"
+        >
+          {showLines ? t('hideLines') : t('showLines')}
+        </button>
+        
+        <button
+          onClick={toggleValidation}
+          className="rounded px-4 py-2 text-sm font-medium bg-gray-100 hover:bg-gray-200 text-gray-700"
+        >
+          {immediateValidation ? t('disableValidation') : t('immediateValidation')}
+        </button>
       </div>
       
-      {selectedTile !== null && (
-        <div className="mt-4 flex items-center gap-2">
+      {renderGameBoard()}
+      
+      {selectedTile !== null && !isComplete && (
+        <div className="mb-4 flex space-x-2">
           <input
             ref={inputRef}
             type="text"
             value={inputValue}
             onChange={handleInputChange}
-            onKeyDown={handleKeyPress}
-            placeholder="Enter number (1-81)"
-            className="rounded-md border border-gray-300 px-3 py-2 text-center text-lg font-medium"
+            onKeyPress={handleKeyPress}
+            className="w-16 rounded border border-gray-300 px-3 py-2 text-center text-lg font-medium text-gray-900"
+            autoFocus
           />
           <button
             onClick={submitNumber}
-            className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
+            className="rounded bg-green-600 px-4 py-2 text-sm font-medium text-white hover:bg-green-700"
           >
-            Submit
+            {t('submit')}
           </button>
-        </div>
-      )}
-      
-      {allTilesFilled() && !isComplete && (
-        <div className="mt-6">
           <button
-            onClick={submitAnswer}
-            className="rounded-md bg-green-600 px-6 py-3 text-base font-medium text-white hover:bg-green-700"
+            onClick={() => {
+              if (selectedTile !== null) {
+                handleTileClear(selectedTile);
+                setSelectedTile(null);
+              }
+            }}
+            className="rounded bg-gray-200 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-300"
           >
-            Submit Answer
+            {t('clear')}
           </button>
         </div>
       )}
       
-      <div className="mt-8 rounded-lg bg-blue-50 p-4 dark:bg-blue-900/20">
-        <h3 className="mb-2 text-lg font-semibold text-gray-900 dark:text-white">How to Play</h3>
-        <ul className="list-inside list-disc space-y-1 text-gray-700 dark:text-gray-300">
-          <li>Connect numbers 1 to 81 by filling in missing numbers</li>
-          <li>Each number must be adjacent to the next number in sequence</li>
-          <li>Connections can be horizontal, vertical, or diagonal</li>
-          <li>Click on empty tiles to enter a number</li>
-          <li>Double-click to clear an entry</li>
-          <li>Toggle &quot;Show correctness&quot; to validate your entries</li>
-          <li>Toggle &quot;Show connections&quot; to see sequential number paths</li>
+      {errorMessage && (
+        <div className="mb-4 rounded bg-red-50 p-3 text-red-800">
+          {errorMessage}
+        </div>
+      )}
+      
+      {isComplete && (
+        <div className={`mb-4 rounded p-4 text-center ${
+          isCorrect 
+            ? 'bg-green-50 text-green-800' 
+            : 'bg-red-50 text-red-800'
+        }`}>
+          <p className="text-lg font-bold">
+            {isCorrect ? t('correct') : t('incorrect')}
+          </p>
+        </div>
+      )}
+      
+      <div className="mt-8 rounded bg-blue-50 p-4">
+        <h3 className="mb-2 text-lg font-semibold text-gray-900">
+          {t('instructionsTitle')}
+        </h3>
+        <ul className="list-inside list-disc space-y-1 text-gray-700">
+          <li>{t('instructions.fillBlanks')}</li>
+          <li>{t('instructions.sequential')}</li>
+          <li>{t('instructions.noRepeat')}</li>
+          <li>{t('instructions.complete')}</li>
         </ul>
       </div>
     </div>

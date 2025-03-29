@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useTranslations } from 'next-intl';
 import Board from './Board';
 import { createEmptyBoard, generateSolvableBoard, boardsMatch, countMatchingTiles, applyMove } from './utils';
 
@@ -9,6 +10,7 @@ const TOTAL_TILES = BOARD_SIZE * BOARD_SIZE;
 const RANDOM_MOVES = 15; // Number of random moves to generate the target pattern
 
 export default function BlackWhiteTilesGame() {
+  const t = useTranslations('blackWhiteTiles');
   const [gameBoard, setGameBoard] = useState<boolean[][]>([]);
   const [targetBoard, setTargetBoard] = useState<boolean[][]>([]);
   const [matchingTiles, setMatchingTiles] = useState(0);
@@ -123,10 +125,10 @@ export default function BlackWhiteTilesGame() {
       <div className="mb-6 flex flex-col items-center justify-center space-y-4">
         <div className="flex items-center justify-center space-x-4">
           <span className="text-sm font-medium text-gray-600 dark:text-gray-300">
-            Moves: {moves}
+            {t('moves')}: {moves}
           </span>
           <span className="text-sm font-medium text-gray-600 dark:text-gray-300">
-            Matching: {matchingTiles}/{TOTAL_TILES} ({Math.round((matchingTiles / TOTAL_TILES) * 100)}%)
+            {t('matching')}: {matchingTiles}/{TOTAL_TILES} ({Math.round((matchingTiles / TOTAL_TILES) * 100)}%)
           </span>
         </div>
         
@@ -139,7 +141,7 @@ export default function BlackWhiteTilesGame() {
                 : 'bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600'
             }`}
           >
-            Easy
+            {t('easy')}
           </button>
           <button
             onClick={() => handleDifficultyChange('medium')}
@@ -149,7 +151,7 @@ export default function BlackWhiteTilesGame() {
                 : 'bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600'
             }`}
           >
-            Medium
+            {t('medium')}
           </button>
           <button
             onClick={() => handleDifficultyChange('hard')}
@@ -159,7 +161,7 @@ export default function BlackWhiteTilesGame() {
                 : 'bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600'
             }`}
           >
-            Hard
+            {t('hard')}
           </button>
         </div>
         
@@ -168,7 +170,7 @@ export default function BlackWhiteTilesGame() {
             onClick={startNewGame}
             className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:bg-blue-700 dark:hover:bg-blue-600"
           >
-            New Game
+            {t('newGame')}
           </button>
           
           <button
@@ -180,22 +182,22 @@ export default function BlackWhiteTilesGame() {
                 : 'bg-amber-500 text-white hover:bg-amber-600 dark:bg-amber-600 dark:hover:bg-amber-500'
             }`}
           >
-            Undo Move
+            {t('undoMove')}
           </button>
         </div>
       </div>
 
       {isWin && (
         <div className="mb-6 rounded-lg bg-green-100 p-4 text-center text-green-800 dark:bg-green-900/30 dark:text-green-400">
-          <p className="text-lg font-bold">Congratulations!</p>
-          <p>You won in {moves} moves.</p>
+          <p className="text-lg font-bold">{t('congratulations')}</p>
+          <p>{t('youWon', { moves })}</p>
         </div>
       )}
 
       <div className="flex flex-col items-center space-y-8 lg:flex-row lg:space-y-0 lg:space-x-12 w-full justify-center">
         <div>
           <h3 className="mb-4 text-center text-lg font-semibold text-gray-900 dark:text-white">
-            Your Board
+            {t('yourBoard')}
           </h3>
           <Board 
             board={gameBoard} 
@@ -206,7 +208,7 @@ export default function BlackWhiteTilesGame() {
         
         <div>
           <h3 className="mb-4 text-center text-lg font-semibold text-gray-900 dark:text-white">
-            Target Pattern
+            {t('targetPattern')}
           </h3>
           <Board 
             board={targetBoard} 
@@ -216,13 +218,13 @@ export default function BlackWhiteTilesGame() {
       </div>
 
       <div className="mt-8 rounded-lg bg-blue-50 p-4 dark:bg-blue-900/20">
-        <h3 className="mb-2 text-lg font-semibold text-gray-900 dark:text-white">How to Play</h3>
+        <h3 className="mb-2 text-lg font-semibold text-gray-900 dark:text-white">{t('howToPlay')}</h3>
         <ul className="list-inside list-disc space-y-1 text-gray-700 dark:text-gray-300">
-          <li>Click on tiles in your board to toggle that tile and its adjacent tiles</li>
-          <li>Your goal is to match the target pattern exactly</li>
-          <li>Each target pattern is guaranteed to be solvable</li>
-          <li>Use the Undo button to revert your last move if needed</li>
-          <li>Try to complete the puzzle in as few moves as possible</li>
+          <li>{t('instructions.toggle')}</li>
+          <li>{t('instructions.goal')}</li>
+          <li>{t('instructions.solvable')}</li>
+          <li>{t('instructions.undo')}</li>
+          <li>{t('instructions.fewerMoves')}</li>
         </ul>
       </div>
     </div>

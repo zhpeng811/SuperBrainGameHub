@@ -1,0 +1,161 @@
+{
+  "header": {
+    "title": "超级大脑游戏中心",
+    "subtitle": "选择一个游戏来挑战你的大脑",
+    "myProfile": "我的个人资料",
+    "settings": "设置"
+  },
+  "home": {
+    "featuredGames": "精选游戏",
+    "aboutTitle": "关于超级大脑游戏中心",
+    "aboutDescription": "欢迎来到超级大脑游戏中心，这里收集了一系列旨在挑战您认知能力的大脑训练游戏。每个游戏都针对不同方面的心智能力，从记忆力和模式识别到数学能力和快速反应。",
+    "learnMore": "了解更多"
+  },
+  "languageSelector": {
+    "label": "语言",
+    "en": "英语",
+    "zh-CN": "简体中文"
+  },
+  "gameLayout": {
+    "title": "超级大脑游戏中心",
+    "backToGames": "返回游戏列表"
+  },
+  "blackWhiteTiles": {
+    "title": "黑白瓷砖",
+    "subtitle": "切换瓷砖以匹配目标图案",
+    "moves": "步数",
+    "matching": "匹配度",
+    "easy": "简单",
+    "medium": "中等",
+    "hard": "困难",
+    "newGame": "新游戏",
+    "undoMove": "撤销",
+    "congratulations": "恭喜！",
+    "youWon": "你用了 {moves} 步完成了游戏。",
+    "yourBoard": "你的棋盘",
+    "targetPattern": "目标图案",
+    "howToPlay": "游戏玩法",
+    "instructions": {
+      "toggle": "点击你棋盘上的瓷砖，会切换该瓷砖及其相邻瓷砖的状态",
+      "goal": "你的目标是完全匹配目标图案",
+      "solvable": "每个目标图案都是可以解决的",
+      "undo": "如有需要，使用撤销按钮回到上一步",
+      "fewerMoves": "尝试用尽可能少的步数完成拼图"
+    }
+  },
+  "digitalLabyrinth": {
+    "title": "数字迷宫",
+    "subtitle": "通过填写缺失的瓷砖，将1到81的数字连接起来",
+    "showLines": "显示连线",
+    "hideLines": "隐藏连线",
+    "immediateValidation": "启用即时验证",
+    "disableValidation": "禁用即时验证",
+    "newGame": "新游戏",
+    "submit": "提交",
+    "clear": "清除",
+    "invalidInput": "请输入1到81之间的数字",
+    "tileOccupied": "此数字已被使用",
+    "notSequential": "数字必须依次连接",
+    "correct": "正确！",
+    "incorrect": "不正确！请检查你的解答。",
+    "instructionsTitle": "游戏玩法",
+    "instructions": {
+      "fillBlanks": "用1到81的数字填写空白瓷砖",
+      "sequential": "每个数字必须与其相邻的顺序数字相连（水平、垂直或对角线）",
+      "noRepeat": "每个数字只能使用一次",
+      "complete": "必须填写所有瓷砖才能完成拼图"
+    }
+  },
+  "numberPuzzle": {
+    "title": "数字华容道",
+    "subtitle": "通过重新排列瓷砖来解决滑动数字谜题",
+    "moves": "步数",
+    "newGame": "新游戏",
+    "gridSize": "网格大小",
+    "congratulations": "恭喜！你用了 {moves} 步解决了谜题！",
+    "howToPlay": "游戏玩法",
+    "instructions": {
+      "slideTiles": "点击与空白区域相邻的瓷砖来滑动它们",
+      "arrangeNumbers": "按顺序排列数字，从1到{totalTiles}",
+      "emptySpace": "空白区域应该最终在右下角",
+      "fewerMoves": "尝试用尽可能少的步数解决谜题",
+      "changeDifficulty": "改变网格大小以增加或减少难度"
+    }
+  },
+  "gameOfLife": {
+    "title": "康威生命游戏",
+    "subtitle": "根据康威生命游戏的规则预测细胞的下一个状态",
+    "round": "回合",
+    "score": "得分",
+    "timeStep": "时间步",
+    "enableVerification": "启用验证模式",
+    "disableVerification": "禁用验证模式",
+    "newGame": "新游戏",
+    "currentState": "当前状态",
+    "yourPrediction": "你的预测",
+    "submitPrediction": "提交预测",
+    "perfectPrediction": "完美！你正确地预测了下一个状态！",
+    "accuracy": "你正确预测了{matchingCells}/{totalCells}个细胞（{percentage}%）。",
+    "nextRound": "下一代",
+    "howToPlay": "游戏玩法",
+    "instructions": {
+      "leftBoard": "左侧棋盘显示康威生命游戏在时间步t的当前状态。",
+      "yourTask": "你的任务是通过点击右侧棋盘上的细胞，预测时间步t+1的下一个状态，切换细胞的存活（黑色）和死亡（白色）状态。",
+      "evolution": "每轮结束后，解答会成为下一轮的初始状态，让你能够随时间跟踪模式的演变。",
+      "rules": {
+        "title": "康威生命游戏的规则（B3/S23）是：",
+        "survive": "任何有2或3个存活邻居的存活细胞会继续存活到下一代。",
+        "birth": "任何恰好有3个存活邻居的死亡细胞会在下一代变为存活状态。",
+        "death": "所有其他细胞在下一代会死亡或保持死亡状态。"
+      },
+      "verification": "打开验证模式，查看您的存活细胞是否正确放置（绿色）或错误放置（红色）。",
+      "colors": {
+        "title": "提交预测后，颜色将显示您的表现：",
+        "green": "绿色：正确放置的存活细胞",
+        "red": "红色：错误放置的存活细胞",
+        "orange": "橙色：漏掉的存活细胞（应该存活的细胞）"
+      },
+      "hover": "将鼠标悬停在细胞上，可以在两个棋盘上高亮显示相应位置。"
+    }
+  },
+  "gameCards": {
+    "games": {
+      "blackWhiteTiles": {
+        "title": "黑白瓷砖",
+        "description": "通过切换瓷砖的黑白状态来匹配目标图案。"
+      },
+      "digitalLabyrinth": {
+        "title": "数字迷宫",
+        "description": "通过填写缺失的瓷砖，将1到81的数字连接起来。"
+      },
+      "numberPuzzle": {
+        "title": "数字华容道",
+        "description": "通过重新排列瓷砖来解决滑动数字谜题。"
+      },
+      "gameOfLife": {
+        "title": "康威生命游戏",
+        "description": "根据康威生命游戏的规则预测细胞的下一个状态。"
+      },
+      "memoryMatch": {
+        "title": "记忆配对",
+        "description": "测试你的记忆力，匹配成对的卡片。"
+      },
+      "wordScramble": {
+        "title": "单词打乱",
+        "description": "将打乱的字母重新排列形成有意义的单词。"
+      },
+      "mathChallenge": {
+        "title": "数学挑战",
+        "description": "在限定时间内解决数学问题。"
+      },
+      "patternRecognition": {
+        "title": "模式识别",
+        "description": "识别并完成视觉模式。"
+      },
+      "reactionTime": {
+        "title": "反应时间",
+        "description": "通过这个快节奏的反应游戏测试你的反射能力。"
+      }
+    }
+  }
+} 

@@ -38,10 +38,10 @@ export default function Board({
         className="grid gap-0.5 bg-gray-100 p-3 rounded-lg shadow-md dark:bg-gray-800"
         style={{ 
           display: 'grid',
-          gridTemplateColumns: `repeat(${size || 15}, 1fr)`,
-          gridTemplateRows: `repeat(${size || 15}, 1fr)`,
-          width: '300px',
-          height: '300px',
+          gridTemplateColumns: `repeat(${size || 20}, 1fr)`,
+          gridTemplateRows: `repeat(${size || 20}, 1fr)`,
+          width: '400px',
+          height: '400px',
           maxWidth: '100%'
         }}
       >

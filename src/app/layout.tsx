@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { LanguageProvider } from '@/utils/LanguageContext';
+import ClientRootLayout from './ClientRootLayout';
 import "./globals.css";
 
 const geistSans = Geist({
@@ -12,12 +14,14 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const basePath = process.env.NODE_ENV === 'production' ? '/SuperBrainGameHub' : '';
+
 export const metadata: Metadata = {
   title: "Super Brain Game Hub",
   description: "A collection of brain training games to challenge your mind",
   icons: {
-    icon: '/brain.png',
-    apple: '/brain.png',
+    icon: `${basePath}/brain.png`,
+    apple: `${basePath}/brain.png`,
   },
 };
 
@@ -31,7 +35,11 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <LanguageProvider>
+          <ClientRootLayout>
+            {children}
+          </ClientRootLayout>
+        </LanguageProvider>
       </body>
     </html>
   );
