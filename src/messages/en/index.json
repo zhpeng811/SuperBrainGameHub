@@ -1,0 +1,161 @@
+{
+  "header": {
+    "title": "Super Brain Game Hub",
+    "subtitle": "Select a game to challenge your brain",
+    "myProfile": "My Profile",
+    "settings": "Settings"
+  },
+  "home": {
+    "featuredGames": "Featured Games",
+    "aboutTitle": "About Super Brain Game Hub",
+    "aboutDescription": "Welcome to Super Brain Game Hub, a collection of brain-training games designed to challenge your cognitive skills. Each game targets different aspects of mental ability, from memory and pattern recognition to mathematical prowess and quick reflexes.",
+    "learnMore": "Learn More"
+  },
+  "languageSelector": {
+    "label": "Language",
+    "en": "English",
+    "zh-CN": "Chinese (Simplified)"
+  },
+  "gameLayout": {
+    "title": "Super Brain Game Hub",
+    "backToGames": "Back to Games"
+  },
+  "blackWhiteTiles": {
+    "title": "Black White Tiles",
+    "subtitle": "Toggle the tiles to match the target pattern",
+    "moves": "Moves",
+    "matching": "Matching",
+    "easy": "Easy",
+    "medium": "Medium",
+    "hard": "Hard",
+    "newGame": "New Game",
+    "undoMove": "Undo Move",
+    "congratulations": "Congratulations!",
+    "youWon": "You won in {moves} moves.",
+    "yourBoard": "Your Board",
+    "targetPattern": "Target Pattern",
+    "howToPlay": "How to Play",
+    "instructions": {
+      "toggle": "Click on tiles in your board to toggle that tile and its adjacent tiles",
+      "goal": "Your goal is to match the target pattern exactly",
+      "solvable": "Each target pattern is guaranteed to be solvable",
+      "undo": "Use the Undo button to revert your last move if needed",
+      "fewerMoves": "Try to complete the puzzle in as few moves as possible"
+    }
+  },
+  "digitalLabyrinth": {
+    "title": "Digital Labyrinth",
+    "subtitle": "Connect the numbers from 1 to 81 by filling in the missing tiles",
+    "showLines": "Show Lines",
+    "hideLines": "Hide Lines",
+    "immediateValidation": "Enable Immediate Validation",
+    "disableValidation": "Disable Immediate Validation",
+    "newGame": "New Game",
+    "submit": "Submit",
+    "clear": "Clear",
+    "invalidInput": "Enter a number from 1 to 81",
+    "tileOccupied": "This number is already used",
+    "notSequential": "Number must connect sequentially",
+    "correct": "Correct!",
+    "incorrect": "Incorrect! Check your solution.",
+    "instructionsTitle": "How to Play",
+    "instructions": {
+      "fillBlanks": "Fill in the blank tiles with numbers from 1 to 81",
+      "sequential": "Each number must be connected (horizontally, vertically, or diagonally) to its sequential neighbors",
+      "noRepeat": "Each number can only be used once",
+      "complete": "All tiles must be filled to complete the puzzle"
+    }
+  },
+  "numberPuzzle": {
+    "title": "Number Puzzle",
+    "subtitle": "Solve the sliding number puzzle by rearranging the tiles",
+    "moves": "Moves",
+    "newGame": "New Game",
+    "gridSize": "Grid Size",
+    "congratulations": "Congratulations! You solved the puzzle in {moves} moves!",
+    "howToPlay": "How to Play",
+    "instructions": {
+      "slideTiles": "Slide tiles by clicking on any tile adjacent to the empty space",
+      "arrangeNumbers": "Arrange the numbers in order from 1 to {totalTiles}",
+      "emptySpace": "The empty space should end up in the bottom right corner",
+      "fewerMoves": "Try to solve the puzzle in as few moves as possible",
+      "changeDifficulty": "Change the grid size to increase or decrease difficulty"
+    }
+  },
+  "gameOfLife": {
+    "title": "Conway's Game of Life",
+    "subtitle": "Predict the next state of cells based on Conway's Game of Life rules",
+    "round": "Round",
+    "score": "Score",
+    "timeStep": "Time Step",
+    "enableVerification": "Enable Verification",
+    "disableVerification": "Disable Verification",
+    "newGame": "New Game",
+    "currentState": "Current State",
+    "yourPrediction": "Your Prediction",
+    "submitPrediction": "Submit Prediction",
+    "perfectPrediction": "Perfect! You predicted the next state correctly!",
+    "accuracy": "You got {matchingCells}/{totalCells} cells correct ({percentage}%).",
+    "nextRound": "Next Generation",
+    "howToPlay": "How to Play",
+    "instructions": {
+      "leftBoard": "The left board shows the current state of Conway's Game of Life at time step t.",
+      "yourTask": "Your task is to predict the next state at time step t+1 on the right board by clicking cells to toggle them between alive (black) and dead (white).",
+      "evolution": "After each round, the solution becomes the new initial state for the next round, allowing you to follow the evolution of patterns over time.",
+      "rules": {
+        "title": "The rules of Conway's Game of Life (B3/S23) are:",
+        "survive": "Any live cell with 2 or 3 live neighbors survives to the next generation.",
+        "birth": "Any dead cell with exactly 3 live neighbors becomes alive in the next generation.",
+        "death": "All other cells die or remain dead in the next generation."
+      },
+      "verification": "Turn on verification mode to see if your alive cells are placed correctly (green) or incorrectly (red).",
+      "colors": {
+        "title": "After submitting your prediction, colors will show your performance:",
+        "green": "Green: Correctly placed live cells",
+        "red": "Red: Incorrectly placed live cells",
+        "orange": "Orange: Missed live cells (cells that should be alive)"
+      },
+      "hover": "Hover over a cell to highlight its corresponding position in both boards."
+    }
+  },
+  "gameCards": {
+    "games": {
+      "blackWhiteTiles": {
+        "title": "Black White Tiles",
+        "description": "Match the pattern by toggling tiles between black and white."
+      },
+      "digitalLabyrinth": {
+        "title": "Digital Labyrinth",
+        "description": "Connect numbers from 1 to 81 by filling in the missing tiles."
+      },
+      "numberPuzzle": {
+        "title": "Number Puzzle",
+        "description": "Solve the sliding number puzzle by rearranging the tiles."
+      },
+      "gameOfLife": {
+        "title": "Conway's Game of Life",
+        "description": "Predict the next state of cells based on Conway's Game of Life rules."
+      },
+      "memoryMatch": {
+        "title": "Memory Match",
+        "description": "Test your memory by matching pairs of cards."
+      },
+      "wordScramble": {
+        "title": "Word Scramble",
+        "description": "Unscramble the letters to form meaningful words."
+      },
+      "mathChallenge": {
+        "title": "Math Challenge",
+        "description": "Solve math problems against the clock."
+      },
+      "patternRecognition": {
+        "title": "Pattern Recognition",
+        "description": "Identify and complete visual patterns."
+      },
+      "reactionTime": {
+        "title": "Reaction Time",
+        "description": "Test your reflexes with this fast-paced reaction game."
+      }
+    }
+  }
+} 

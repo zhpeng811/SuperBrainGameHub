@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
+import { useTranslations } from 'next-intl';
 
 interface Tile {
   value: number;
@@ -10,6 +11,7 @@ interface Tile {
 type GridSize = 3 | 4 | 5;
 
 export default function NumberPuzzleGame() {
+  const t = useTranslations('numberPuzzle');
   const [gridSize, setGridSize] = useState<GridSize>(4);
   const [tiles, setTiles] = useState<Tile[]>([]);
   const [emptyPosition, setEmptyPosition] = useState<number>(15);
@@ -167,18 +169,18 @@ export default function NumberPuzzleGame() {
       <div className="mb-6 flex flex-col items-center gap-4">
         <div className="flex items-center gap-4">
           <div className="text-lg font-medium">
-            Moves: <span className="font-bold">{moves}</span>
+            {t('moves')}: <span className="font-bold">{moves}</span>
           </div>
           <button
             onClick={initializeGame}
             className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
           >
-            New Game
+            {t('newGame')}
           </button>
         </div>
         
         <div className="flex items-center gap-2">
-          <span className="text-sm font-medium text-gray-600 dark:text-gray-400">Grid Size:</span>
+          <span className="text-sm font-medium text-gray-600 dark:text-gray-400">{t('gridSize')}:</span>
           <div className="flex rounded-md shadow-sm">
             {[3, 4, 5].map((size) => (
               <button
@@ -199,11 +201,11 @@ export default function NumberPuzzleGame() {
       
       {isWon && (
         <div className="mb-4 rounded-md bg-green-100 p-3 text-center text-green-800">
-          <p className="font-bold">Congratulations! You solved the puzzle in {moves} moves!</p>
+          <p className="font-bold">{t('congratulations', { moves })}</p>
         </div>
       )}
       
-      <div className={`grid ${getGridColumnsClass()} gap-2 rounded-md bg-gray-100 p-2 dark:bg-gray-700 ${getGridSize()}`}>
+      <div className={`grid gap-1 ${getGridColumnsClass()} ${getGridSize()}`}>
         {Array.from({ length: totalPositions }).map((_, position) => {
           const tile = tiles.find((t) => t.position === position);
           const tileSize = getTileSize();
@@ -226,13 +228,13 @@ export default function NumberPuzzleGame() {
       </div>
       
       <div className="mt-8 rounded-lg bg-blue-50 p-4 dark:bg-blue-900/20">
-        <h3 className="mb-2 text-lg font-semibold text-gray-900 dark:text-white">How to Play</h3>
+        <h3 className="mb-2 text-lg font-semibold text-gray-900 dark:text-white">{t('howToPlay')}</h3>
         <ul className="list-inside list-disc space-y-1 text-gray-700 dark:text-gray-300">
-          <li>Slide tiles by clicking on any tile adjacent to the empty space</li>
-          <li>Arrange the numbers in order from 1 to {totalTiles}</li>
-          <li>The empty space should end up in the bottom right corner</li>
-          <li>Try to solve the puzzle in as few moves as possible</li>
-          <li>Change the grid size to increase or decrease difficulty</li>
+          <li>{t('instructions.slideTiles')}</li>
+          <li>{t('instructions.arrangeNumbers', { totalTiles })}</li>
+          <li>{t('instructions.emptySpace')}</li>
+          <li>{t('instructions.fewerMoves')}</li>
+          <li>{t('instructions.changeDifficulty')}</li>
         </ul>
       </div>
     </div>

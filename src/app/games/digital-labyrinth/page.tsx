@@ -1,14 +1,17 @@
 'use client';
 
 import DigitalLabyrinthGame from '@/components/games/digitalLabyrinth/DigitalLabyrinthGame';
+import { useTranslations } from 'next-intl';
 
 export default function DigitalLabyrinthPage() {
+  const t = useTranslations('digitalLabyrinth');
+  
   return (
     <div className="mx-auto max-w-4xl">
       <div className="mb-8 text-center">
-        <h1 className="mb-2 text-3xl font-bold text-gray-900 dark:text-white">Digital Labyrinth</h1>
+        <h1 className="mb-2 text-3xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
         <p className="text-gray-600 dark:text-gray-400">
-          Connect the numbers from 1 to 81 by filling in the missing tiles
+          {t('subtitle')}
         </p>
       </div>
 
