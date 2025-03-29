@@ -23,6 +23,13 @@ export const games: GameCardProps[] = [
     link: '/games/number-puzzle',
   },
   {
+    id: 'game-of-life',
+    title: 'Conway\'s Game of Life',
+    description: 'Predict the next state of cells based on Conway\'s Game of Life rules.',
+    imageUrl: '/game-of-life.png',
+    link: '/games/game-of-life',
+  },
+  {
     id: 'memory-match',
     title: 'Memory Match',
     description: 'Test your memory by matching pairs of cards.',

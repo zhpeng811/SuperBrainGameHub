@@ -225,9 +225,15 @@ export default function NumberPuzzleGame() {
         })}
       </div>
       
-      <div className="mt-6 text-center text-gray-600 dark:text-gray-400">
-        <p>Slide the tiles into the correct order from 1 to {totalTiles}.</p>
-        <p>The empty space should be in the bottom right corner.</p>
+      <div className="mt-8 rounded-lg bg-blue-50 p-4 dark:bg-blue-900/20">
+        <h3 className="mb-2 text-lg font-semibold text-gray-900 dark:text-white">How to Play</h3>
+        <ul className="list-inside list-disc space-y-1 text-gray-700 dark:text-gray-300">
+          <li>Slide tiles by clicking on any tile adjacent to the empty space</li>
+          <li>Arrange the numbers in order from 1 to {totalTiles}</li>
+          <li>The empty space should end up in the bottom right corner</li>
+          <li>Try to solve the puzzle in as few moves as possible</li>
+          <li>Change the grid size to increase or decrease difficulty</li>
+        </ul>
       </div>
     </div>
   );
