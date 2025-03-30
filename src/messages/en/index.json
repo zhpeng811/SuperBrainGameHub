@@ -118,6 +118,43 @@
       "hover": "Hover over a cell to highlight its corresponding position in both boards."
     }
   },
+  "rapidCalculation": {
+    "title": "Rapid Calculation",
+    "subtitle": "Test your math skills by adding numbers that appear briefly on screen!",
+    "instructions": "Add numbers that appear for a brief time each.",
+    "startGame": "Start Game",
+    "memorize": "Remember this number!",
+    "enterSum": "Enter the sum of all numbers:",
+    "submit": "Submit",
+    "correct": "Correct!",
+    "incorrect": "Incorrect!",
+    "correctAnswer": "The correct answer is:",
+    "yourNumbers": "The numbers were:",
+    "playAgain": "Play Again",
+    "howToPlay": "How to Play",
+    "numberCount": "Number of numbers",
+    "timeInterval": "Time per number",
+    "digitCount": "Digits per number",
+    "timeOptions": {
+      "half": "0.5s",
+      "one": "1.0s",
+      "oneHalf": "1.5s",
+      "two": "2.0s"
+    },
+    "digitOptions": {
+      "one": "1 digit",
+      "two": "2 digits",
+      "three": "3 digits",
+      "four": "4 digits"
+    },
+    "instructions_details": {
+      "watch": "Watch as numbers appear on screen one by one",
+      "remember": "Each number appears for only a short time",
+      "add": "Add all the numbers in your head",
+      "enter": "Enter the sum when prompted",
+      "practice": "Practice to improve your mental math skills"
+    }
+  },
   "gameCards": {
     "games": {
       "blackWhiteTiles": {
@@ -155,6 +192,10 @@
       "reactionTime": {
         "title": "Reaction Time",
         "description": "Test your reflexes with this fast-paced reaction game."
+      },
+      "rapidCalculation": {
+        "title": "Rapid Calculation",
+        "description": "Test your calculation speed by adding numbers that appear briefly."
       }
     }
   }

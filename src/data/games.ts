@@ -30,6 +30,13 @@ export const games: GameCardProps[] = [
     link: '/games/game-of-life',
   },
   {
+    id: 'rapidCalculation',
+    title: 'Rapid Calculation',
+    description: 'Test your calculation speed by adding numbers that appear briefly.',
+    imageUrl: '/placeholder-game.jpg',
+    link: '/games/rapid-calculation',
+  },
+  {
     id: 'memoryMatch',
     title: 'Memory Match',
     description: 'Test your memory by matching pairs of cards.',
