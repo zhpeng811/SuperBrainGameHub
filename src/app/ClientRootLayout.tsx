@@ -6,6 +6,7 @@ import { useLanguage } from '@/utils/LanguageContext';
 import { defaultLocale } from '@/i18n/index';
 import enMessages from '@/messages/en/index.json';
 import zhCNMessages from '@/messages/zh-CN/index.json';
+import DynamicTitle from '@/components/common/DynamicTitle';
 
 const messages = {
   'en': enMessages,
@@ -28,6 +29,7 @@ export default function ClientRootLayout({ children }: { children: ReactNode }) 
   // Re-render when locale changes to apply new translations without losing state
   return (
     <NextIntlClientProvider locale={currentLocale} messages={currentMessages}>
+      <DynamicTitle />
       {children}
     </NextIntlClientProvider>
   );

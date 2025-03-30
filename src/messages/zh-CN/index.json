@@ -118,6 +118,43 @@
       "hover": "将鼠标悬停在细胞上，可以在两个棋盘上高亮显示相应位置。"
     }
   },
+  "rapidCalculation": {
+    "title": "速算",
+    "subtitle": "通过计算短暂显示在屏幕上的数字来测试你的数学技能！",
+    "instructions": "计算短暂显示的每个数字的总和。",
+    "startGame": "开始游戏",
+    "memorize": "记住这个数字！",
+    "enterSum": "输入所有数字的总和：",
+    "submit": "提交",
+    "correct": "正确！",
+    "incorrect": "不正确！",
+    "correctAnswer": "正确答案是：",
+    "yourNumbers": "这些数字是：",
+    "playAgain": "再玩一次",
+    "howToPlay": "游戏玩法",
+    "numberCount": "数字数量",
+    "timeInterval": "每个数字显示时间",
+    "digitCount": "每个数字的位数",
+    "timeOptions": {
+      "half": "0.5秒",
+      "one": "1.0秒",
+      "oneHalf": "1.5秒",
+      "two": "2.0秒"
+    },
+    "digitOptions": {
+      "one": "1位数",
+      "two": "2位数",
+      "three": "3位数",
+      "four": "4位数"
+    },
+    "instructions_details": {
+      "watch": "观察屏幕上逐个出现的数字",
+      "remember": "每个数字只会短暂显示",
+      "add": "在脑中计算所有数字的总和",
+      "enter": "在提示时输入总和",
+      "practice": "练习以提高你的心算能力"
+    }
+  },
   "gameCards": {
     "games": {
       "blackWhiteTiles": {
@@ -155,6 +192,10 @@
       "reactionTime": {
         "title": "反应时间",
         "description": "通过这个快节奏的反应游戏测试你的反射能力。"
+      },
+      "rapidCalculation": {
+        "title": "速算",
+        "description": "通过计算短暂显示的数字来测试你的计算速度。"
       }
     }
   }
