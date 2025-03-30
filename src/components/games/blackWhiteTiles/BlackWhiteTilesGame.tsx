@@ -31,7 +31,9 @@ export default function BlackWhiteTilesGame() {
     const matches = countMatchingTiles(gameBoard, targetBoard);
     setMatchingTiles(matches);
     
-    if (boardsMatch(gameBoard, targetBoard)) {
+    // Check if boards match and update isWin state
+    const matched = boardsMatch(gameBoard, targetBoard);
+    if (matched) {
       setIsWin(true);
     }
   }, [gameBoard, targetBoard]);
