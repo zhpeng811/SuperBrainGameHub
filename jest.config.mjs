@@ -1,15 +1,7 @@
 const config = {
   testEnvironment: 'jest-environment-jsdom',
   transform: {
-    '^.+\\.(js|jsx|ts|tsx)$': ['babel-jest', { 
-      presets: [
-        ['next/babel', {
-          'preset-react': {
-            runtime: 'automatic',
-          },
-        }]
-      ] 
-    }],
+    '^.+\\.(js|jsx|ts|tsx)$': ['babel-jest', { presets: ['next/babel'] }],
   },
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
@@ -29,6 +21,6 @@ const config = {
     '!**/node_modules/**',
   ],
   coverageReporters: ['lcov', 'text', 'text-summary'],
-};
+}; 
 
 export default config; 
