@@ -37,6 +37,13 @@ export const games: GameCardProps[] = [
     link: '/games/rapid-calculation',
   },
   {
+    id: 'qrCodeMemory',
+    title: 'QR Code Memory',
+    description: 'Memorize a QR code and identify it among others.',
+    imageUrl: '/qr-code-memory.jpg',
+    link: '/games/qr-code-memory',
+  },
+  {
     id: 'memoryMatch',
     title: 'Memory Match',
     description: 'Test your memory by matching pairs of cards.',

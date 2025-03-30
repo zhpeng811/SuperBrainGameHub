@@ -58,6 +58,8 @@
     "notSequential": "Number must connect sequentially",
     "correct": "Correct!",
     "incorrect": "Incorrect! Check your solution.",
+    "fillAllTiles": "Please fill all tiles before submitting your answer",
+    "checkAnswer": "Check Answer",
     "instructionsTitle": "How to Play",
     "instructions": {
       "fillBlanks": "Fill in the blank tiles with numbers from 1 to 81",
@@ -178,6 +180,10 @@
         "title": "Conway's Game of Life",
         "description": "Predict the next state of cells based on Conway's Game of Life rules."
       },
+      "qrCodeMemory": {
+        "title": "QR Code Memory",
+        "description": "Memorize a QR code and identify it among others."
+      },
       "memoryMatch": {
         "title": "Memory Match",
         "description": "Test your memory by matching pairs of cards."
@@ -203,5 +209,24 @@
         "description": "Test your calculation speed by adding numbers that appear briefly."
       }
     }
+  },
+  "qrCodeMemory": {
+    "title": "QR Code Memory",
+    "description": "Memorize a QR code and identify it among others",
+    "memorizePhase": "Memorize this QR code",
+    "memorizeInstructions": "Take your time to memorize the details and pattern of this QR code.",
+    "doneMemorizing": "Done Memorizing",
+    "selectPhase": "Select the QR code you just memorized",
+    "showOriginal": "Show Original",
+    "hideOriginal": "Hide Original",
+    "originalQRCode": "Original QR Code",
+    "yourSelection": "Your Selection",
+    "correctSelection": "Correct! Great job!",
+    "incorrectSelection": "Incorrect! Try again.",
+    "playAgain": "Play Again",
+    "difficultyLevel": "Difficulty Level (Number of QR codes)",
+    "selectFromOptions": "Select from {count} options",
+    "difficultyWas": "Difficulty: {count} QR codes",
+    "hoverToEnlarge": "Hover over any QR code to enlarge it"
   }
 } 

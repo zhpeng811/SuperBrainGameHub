@@ -54,10 +54,12 @@
     "submit": "提交",
     "clear": "清除",
     "invalidInput": "请输入1到81之间的数字",
-    "tileOccupied": "此数字已被使用",
-    "notSequential": "数字必须依次连接",
+    "tileOccupied": "这个数字已经被使用",
+    "notSequential": "数字必须按顺序连接",
     "correct": "正确！",
     "incorrect": "不正确！请检查你的解答。",
+    "fillAllTiles": "请在提交答案前填满所有方格",
+    "checkAnswer": "检查答案",
     "instructionsTitle": "游戏玩法",
     "instructions": {
       "fillBlanks": "用1到81的数字填写空白瓷砖",
@@ -164,23 +166,27 @@
     "games": {
       "blackWhiteTiles": {
         "title": "黑白瓷砖",
-        "description": "通过切换瓷砖的黑白状态来匹配目标图案。"
+        "description": "通过切换黑白瓷砖来匹配目标图案。"
       },
       "digitalLabyrinth": {
         "title": "数字迷宫",
-        "description": "通过填写缺失的瓷砖，将1到81的数字连接起来。"
+        "description": "通过填写缺失的方块将数字从1连接到81。"
       },
       "numberPuzzle": {
-        "title": "数字华容道",
-        "description": "通过重新排列瓷砖来解决滑动数字谜题。"
+        "title": "数字拼图",
+        "description": "通过重新排列方块来解决滑动数字拼图。"
       },
       "gameOfLife": {
         "title": "康威生命游戏",
-        "description": "根据康威生命游戏的规则预测细胞的下一个状态。"
+        "description": "根据康威生命游戏规则预测细胞的下一个状态。"
+      },
+      "qrCodeMemory": {
+        "title": "二维码记忆",
+        "description": "记住一个二维码，从多个中识别出来。"
       },
       "memoryMatch": {
-        "title": "记忆配对",
-        "description": "测试你的记忆力，匹配成对的卡片。"
+        "title": "记忆匹配",
+        "description": "通过匹配卡片对来测试您的记忆力。"
       },
       "wordScramble": {
         "title": "单词打乱",
@@ -203,5 +209,24 @@
         "description": "通过计算短暂显示的数字来测试你的计算速度。"
       }
     }
+  },
+  "qrCodeMemory": {
+    "title": "二维码记忆",
+    "description": "记住一个二维码，从多个中识别出来",
+    "memorizePhase": "记住这个二维码",
+    "memorizeInstructions": "花点时间记住这个二维码的细节和图案。",
+    "doneMemorizing": "记住了",
+    "selectPhase": "选择你刚才记住的二维码",
+    "showOriginal": "显示原始二维码",
+    "hideOriginal": "隐藏原始二维码",
+    "originalQRCode": "原始二维码",
+    "yourSelection": "你的选择",
+    "correctSelection": "正确！做得好！",
+    "incorrectSelection": "错误！再试一次。",
+    "playAgain": "再玩一次",
+    "difficultyLevel": "难度等级（二维码数量）",
+    "selectFromOptions": "从 {count} 个选项中选择",
+    "difficultyWas": "难度：{count} 个二维码",
+    "hoverToEnlarge": "将鼠标悬停在二维码上可以放大查看"
   }
 } 

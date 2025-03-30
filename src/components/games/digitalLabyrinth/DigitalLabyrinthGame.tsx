@@ -791,6 +791,17 @@ export default function DigitalLabyrinthGame() {
         </div>
       )}
       
+      {!isComplete && allTilesFilled() && (
+        <div className="mb-4">
+          <button
+            onClick={submitAnswer}
+            className="rounded bg-indigo-600 px-6 py-3 text-base font-medium text-white hover:bg-indigo-700"
+          >
+            {t('checkAnswer')}
+          </button>
+        </div>
+      )}
+      
       {errorMessage && (
         <div className="mb-4 rounded bg-red-50 p-3 text-red-800">
           {errorMessage}
