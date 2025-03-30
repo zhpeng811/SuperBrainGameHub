@@ -1,4 +1,4 @@
-export default {
+const config = {
   testEnvironment: 'jest-environment-jsdom',
   transform: {
     '^.+\\.(js|jsx|ts|tsx)$': ['babel-jest', { presets: ['next/babel'] }],
@@ -22,3 +22,5 @@ export default {
   ],
   coverageReporters: ['lcov', 'text', 'text-summary'],
 }; 
+
+export default config; 

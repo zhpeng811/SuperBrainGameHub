@@ -28,7 +28,7 @@ export default function ClientRootLayout({ children }: { children: ReactNode }) 
 
   // Re-render when locale changes to apply new translations without losing state
   return (
-    <NextIntlClientProvider locale={currentLocale} messages={currentMessages}>
+    <NextIntlClientProvider locale={currentLocale} messages={currentMessages} timeZone="UTC">
       <DynamicTitle />
       {children}
     </NextIntlClientProvider>

@@ -10,6 +10,14 @@ jest.mock('next-intl', () => ({
 jest.mock('../../../../components/games/rapidCalculation/utils', () => ({
   generateNumbers: jest.fn(() => [10, 20, 30, 40, 50]),
   calculateSum: jest.fn(() => 150),
+  generateNumbersWithOperators: jest.fn(() => [
+    { value: 10, operator: '+' },
+    { value: 20, operator: '+' },
+    { value: 30, operator: '+' },
+    { value: 40, operator: '+' },
+    { value: 50, operator: '+' }
+  ]),
+  calculateResult: jest.fn(() => 150)
 }));
 
 // Mock setTimeout and clearTimeout
@@ -85,7 +93,7 @@ describe('Rapid Calculation Game Component', () => {
     });
     
     // Should now be in result state
-    expect(screen.getByText('enterSum')).toBeInTheDocument();
+    expect(screen.getByText('enterResult')).toBeInTheDocument();
     expect(screen.getByText('submit')).toBeInTheDocument();
   });
 
