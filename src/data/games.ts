@@ -33,7 +33,7 @@ export const games: GameCardProps[] = [
     id: 'rapidCalculation',
     title: 'Rapid Calculation',
     description: 'Test your calculation speed by adding numbers that appear briefly.',
-    imageUrl: '/placeholder-game.jpg',
+    imageUrl: '/rapid-calculation.png',
     link: '/games/rapid-calculation',
   },
   {

@@ -2,41 +2,72 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { useTranslations } from 'next-intl';
-import { generateNumbers, calculateSum } from './utils';
+import { 
+  generateNumbers, 
+  calculateSum, 
+  generateNumbersWithOperators,
+  calculateResult,
+  Operator,
+  NumberWithOperator
+} from './utils';
 
 export default function RapidCalculationGame() {
   const t = useTranslations('rapidCalculation');
   const [gameState, setGameState] = useState<'ready' | 'playing' | 'result'>('ready');
-  const [currentNumber, setCurrentNumber] = useState<number | null>(null);
-  const [numbers, setNumbers] = useState<number[]>([]);
+  const [currentNumber, setCurrentNumber] = useState<NumberWithOperator | null>(null);
+  const [numbersWithOperators, setNumbersWithOperators] = useState<NumberWithOperator[]>([]);
   const [userAnswer, setUserAnswer] = useState('');
   const [correctAnswer, setCorrectAnswer] = useState(0);
   const [result, setResult] = useState<'correct' | 'incorrect' | null>(null);
+  
   // Game configuration options
   const [numCount, setNumCount] = useState<number>(5);
   const [timeInterval, setTimeInterval] = useState<number>(1000);
   const [digitCount, setDigitCount] = useState<number>(2);
+  const [allowedOperators, setAllowedOperators] = useState<Operator[]>(['+']);
+  
   // Refs
   const timerRef = useRef<NodeJS.Timeout | null>(null);
-  const numbersRef = useRef<number[]>([]);
+  const numbersWithOperatorsRef = useRef<NumberWithOperator[]>([]);
   const currentIndexRef = useRef<number>(0);
 
   // Generate random numbers based on configuration
   const generateGameNumbers = () => {
-    const newNumbers = generateNumbers(numCount, digitCount);
-    setNumbers(newNumbers);
-    numbersRef.current = newNumbers;
-    const sum = calculateSum(newNumbers);
-    setCorrectAnswer(sum);
-    return newNumbers;
+    if (allowedOperators.length === 1 && allowedOperators[0] === '+') {
+      // Addition only mode
+      const newNumbers = generateNumbers(numCount, digitCount);
+      
+      // Create corresponding NumberWithOperator array
+      const withOperators: NumberWithOperator[] = newNumbers.map((value, index) => ({
+        value,
+        operator: index === 0 ? '+' : '+' as Operator
+      }));
+      setNumbersWithOperators(withOperators);
+      numbersWithOperatorsRef.current = withOperators;
+      
+      const sum = calculateSum(newNumbers);
+      setCorrectAnswer(sum);
+    } else {
+      // Mixed operators mode (+ and -)
+      const newNumbersWithOps = generateNumbersWithOperators(
+        numCount, 
+        digitCount, 
+        allowedOperators
+      );
+      setNumbersWithOperators(newNumbersWithOps);
+      numbersWithOperatorsRef.current = newNumbersWithOps;
+      
+      const result = calculateResult(newNumbersWithOps);
+      setCorrectAnswer(result);
+    }
   };
 
   // Start the game
   const startGame = () => {
-    const newNumbers = generateGameNumbers();
+    generateGameNumbers();
     setGameState('playing');
     currentIndexRef.current = 0;
-    setCurrentNumber(newNumbers[0]);
+    setCurrentNumber(numbersWithOperatorsRef.current[0]);
     
     // Schedule the number display sequence
     timerRef.current = setTimeout(showNextNumber, timeInterval);
@@ -46,9 +77,9 @@ export default function RapidCalculationGame() {
   const showNextNumber = () => {
     const nextIndex = currentIndexRef.current + 1;
     
-    if (nextIndex < numbersRef.current.length) {
+    if (nextIndex < numbersWithOperatorsRef.current.length) {
       currentIndexRef.current = nextIndex;
-      setCurrentNumber(numbersRef.current[nextIndex]);
+      setCurrentNumber(numbersWithOperatorsRef.current[nextIndex]);
       
       // Schedule next number using the configured time interval
       timerRef.current = setTimeout(showNextNumber, timeInterval);
@@ -75,14 +106,23 @@ export default function RapidCalculationGame() {
   const resetGame = () => {
     setGameState('ready');
     setCurrentNumber(null);
-    setNumbers([]);
-    numbersRef.current = [];
+    setNumbersWithOperators([]);
+    numbersWithOperatorsRef.current = [];
     currentIndexRef.current = 0;
     setUserAnswer('');
     setResult(null);
     
     if (timerRef.current) {
       clearTimeout(timerRef.current);
+    }
+  };
+
+  // Set operators based on mode
+  const setOperatorMode = (mode: 'addition' | 'mixed') => {
+    if (mode === 'addition') {
+      setAllowedOperators(['+']);
+    } else {
+      setAllowedOperators(['+', '-']);
     }
   };
 
@@ -123,6 +163,18 @@ export default function RapidCalculationGame() {
       </select>
     </div>
   );
+
+  // Format expression for display
+  const formatExpression = (numbers: NumberWithOperator[]): string => {
+    if (numbers.length === 0) return '';
+    
+    return numbers.map((num, index) => {
+      // First number doesn't show its operator
+      if (index === 0) return num.value.toString();
+      // For result summary, show all operators
+      return `${num.operator} ${num.value}`;
+    }).join(' ');
+  };
 
   return (
     <div className="flex flex-col items-center">
@@ -169,6 +221,34 @@ export default function RapidCalculationGame() {
             />
           </div>
           
+          <div className="mb-8">
+            <label className="block mb-2 font-medium text-gray-700 dark:text-gray-300">
+              {t('operators')}
+            </label>
+            <div className="flex justify-center gap-4">
+              <button
+                onClick={() => setOperatorMode('addition')}
+                className={`px-4 py-2 rounded-md ${
+                  allowedOperators.length === 1 && allowedOperators[0] === '+'
+                    ? 'bg-blue-500 text-white' 
+                    : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300'
+                }`}
+              >
+                {t('additionOnly')}
+              </button>
+              <button
+                onClick={() => setOperatorMode('mixed')}
+                className={`px-4 py-2 rounded-md ${
+                  allowedOperators.length > 1 || (allowedOperators.length === 1 && allowedOperators[0] !== '+')
+                    ? 'bg-blue-500 text-white' 
+                    : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300'
+                }`}
+              >
+                {t('additionSubtraction')}
+              </button>
+            </div>
+          </div>
+          
           <button
             onClick={startGame}
             className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-6 rounded-lg"
@@ -180,16 +260,24 @@ export default function RapidCalculationGame() {
       
       {gameState === 'playing' && (
         <div className="flex flex-col items-center">
-          <h1 className="text-7xl font-bold mb-8 h-32 flex items-center justify-center">
-            {currentNumber}
-          </h1>
+          <div className="text-7xl font-bold mb-8 h-32 flex flex-col items-center justify-center">
+            <span className="text-3xl text-gray-500 mb-2">{currentIndexRef.current + 1}/{numCount}</span>
+            {currentNumber && (
+              <div className="flex items-center">
+                {currentIndexRef.current > 0 && currentNumber.operator === '-' && (
+                  <span className="mr-2">-</span>
+                )}
+                <span>{currentNumber.value}</span>
+              </div>
+            )}
+          </div>
           <p>{t('memorize')}</p>
         </div>
       )}
       
       {gameState === 'result' && (
         <div className="flex flex-col items-center">
-          <p className="mb-4 text-xl">{t('enterSum')}</p>
+          <p className="mb-4 text-xl">{t('enterResult')}</p>
           
           <form onSubmit={handleSubmit} className="flex flex-col items-center gap-4">
             <input
@@ -216,7 +304,7 @@ export default function RapidCalculationGame() {
                 {t('correctAnswer')} {correctAnswer}
               </p>
               <p className="mt-2">
-                {t('yourNumbers')} {numbers.join(' + ')}
+                {t('yourExpression')} {formatExpression(numbersWithOperators)}
               </p>
               <button
                 onClick={resetGame}
