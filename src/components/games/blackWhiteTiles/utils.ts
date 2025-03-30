@@ -52,6 +52,21 @@ export function generateRandomBoard(size: number, blackTileProbability = 0.4): b
 
 // Check if two boards match exactly
 export function boardsMatch(boardA: boolean[][], boardB: boolean[][]): boolean {
+  // Handle empty boards comparison
+  if (boardA.length === 0 && boardB.length === 0) {
+    return true;
+  }
+  
+  // Handle the case when one board is empty but the other is not
+  if (boardA.length === 0 || boardB.length === 0) {
+    return false;
+  }
+  
+  // Check if the boards have different dimensions
+  if (boardA.length !== boardB.length || boardA[0].length !== boardB[0].length) {
+    return false;
+  }
+  
   const size = boardA.length;
   
   for (let i = 0; i < size; i++) {

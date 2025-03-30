@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { useTranslations } from 'next-intl';
+import { generateNumbers, calculateSum } from './utils';
 
 export default function RapidCalculationGame() {
   const t = useTranslations('rapidCalculation');
@@ -21,23 +22,18 @@ export default function RapidCalculationGame() {
   const currentIndexRef = useRef<number>(0);
 
   // Generate random numbers based on configuration
-  const generateNumbers = () => {
-    // Calculate min and max based on digit count
-    const min = digitCount === 1 ? 1 : Math.pow(10, digitCount - 1);
-    const max = Math.pow(10, digitCount) - 1;
-    
-    const newNumbers = Array.from({ length: numCount }, () => 
-      Math.floor(Math.random() * (max - min + 1)) + min
-    );
+  const generateGameNumbers = () => {
+    const newNumbers = generateNumbers(numCount, digitCount);
     setNumbers(newNumbers);
     numbersRef.current = newNumbers;
-    setCorrectAnswer(newNumbers.reduce((sum, num) => sum + num, 0));
+    const sum = calculateSum(newNumbers);
+    setCorrectAnswer(sum);
     return newNumbers;
   };
 
   // Start the game
   const startGame = () => {
-    const newNumbers = generateNumbers();
+    const newNumbers = generateGameNumbers();
     setGameState('playing');
     currentIndexRef.current = 0;
     setCurrentNumber(newNumbers[0]);
@@ -117,6 +113,7 @@ export default function RapidCalculationGame() {
         value={value} 
         onChange={(e) => onChange(Number(e.target.value))}
         className="px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+        aria-label={label}
       >
         {options.map(option => (
           <option key={option.value} value={option.value}>
@@ -183,9 +180,9 @@ export default function RapidCalculationGame() {
       
       {gameState === 'playing' && (
         <div className="flex flex-col items-center">
-          <div className="text-7xl font-bold mb-8 h-32 flex items-center justify-center">
+          <h1 className="text-7xl font-bold mb-8 h-32 flex items-center justify-center">
             {currentNumber}
-          </div>
+          </h1>
           <p>{t('memorize')}</p>
         </div>
       )}
