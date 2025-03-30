@@ -2,7 +2,10 @@ import {
   generateRandomNumber,
   calculateSum,
   generateNumbers,
-  formatTime
+  formatTime,
+  calculateResult,
+  generateNumbersWithOperators,
+  NumberWithOperator
 } from '../../../../components/games/rapidCalculation/utils';
 
 describe('Rapid Calculation - Utilities', () => {
@@ -94,6 +97,96 @@ describe('Rapid Calculation - Utilities', () => {
       expect(formatTime(1000)).toBe('1s');
       expect(formatTime(1500)).toBe('1.5s');
       expect(formatTime(2000)).toBe('2s');
+    });
+  });
+  
+  describe('calculateResult', () => {
+    it('correctly applies operations to numbers with operators', () => {
+      // Test with a few simple cases
+      const testCase1: NumberWithOperator[] = [
+        { value: 10, operator: '+' },
+        { value: 5, operator: '+' },
+        { value: 3, operator: '-' }
+      ];
+      expect(calculateResult(testCase1)).toBe(12); // 10 + 5 - 3 = 12
+      
+      const testCase2: NumberWithOperator[] = [
+        { value: 20, operator: '+' },
+        { value: 10, operator: '-' },
+        { value: 5, operator: '-' }
+      ];
+      expect(calculateResult(testCase2)).toBe(5); // 20 - 10 - 5 = 5
+      
+      const testCase3: NumberWithOperator[] = [
+        { value: 100, operator: '+' },
+        { value: 50, operator: '+' },
+        { value: 25, operator: '+' }
+      ];
+      expect(calculateResult(testCase3)).toBe(175); // 100 + 50 + 25 = 175
+    });
+    
+    it('returns the first number when array has only one item', () => {
+      expect(calculateResult([{ value: 42, operator: '+' }])).toBe(42);
+    });
+    
+    it('returns 0 for an empty array', () => {
+      expect(calculateResult([])).toBe(0);
+    });
+  });
+  
+  describe('generateNumbersWithOperators', () => {
+    it('generates the correct number of items', () => {
+      expect(generateNumbersWithOperators(5, 2, ['+', '-']).length).toBe(5);
+      expect(generateNumbersWithOperators(10, 1, ['+']).length).toBe(10);
+    });
+    
+    it('generates numbers with the correct number of digits', () => {
+      // Test 1-digit numbers
+      const oneDigitNumbersWithOps = generateNumbersWithOperators(20, 1, ['+']);
+      oneDigitNumbersWithOps.forEach(num => {
+        expect(num.value.toString().length).toBe(1);
+      });
+      
+      // Test 2-digit numbers
+      const twoDigitNumbersWithOps = generateNumbersWithOperators(20, 2, ['+']);
+      twoDigitNumbersWithOps.forEach(num => {
+        expect(num.value.toString().length).toBe(2);
+      });
+    });
+    
+    it('uses only the operators provided in the options', () => {
+      // Test addition only
+      const additionOnly = generateNumbersWithOperators(20, 1, ['+']);
+      additionOnly.forEach(num => {
+        expect(num.operator).toBe('+');
+      });
+      
+      // Test subtraction only
+      const subtractionOnly = generateNumbersWithOperators(20, 1, ['-']);
+      // First number always has + operator, subsequent numbers should have - operator
+      expect(subtractionOnly[0].operator).toBe('+');
+      subtractionOnly.slice(1).forEach(num => {
+        expect(num.operator).toBe('-');
+      });
+      
+      // Test mixed operators
+      const mixedOperators = generateNumbersWithOperators(100, 1, ['+', '-']);
+      // First element always has + operator
+      expect(mixedOperators[0].operator).toBe('+');
+      
+      // Check the remaining elements to see if both operators are used
+      const remainingOps = mixedOperators.slice(1);
+      const hasAddition = remainingOps.some(num => num.operator === '+');
+      const hasSubtraction = remainingOps.some(num => num.operator === '-');
+      
+      // With 99 remaining numbers, there should be a mix of both operators
+      expect(hasAddition).toBe(true);
+      expect(hasSubtraction).toBe(true);
+    });
+    
+    it('always assigns + operator to the first number', () => {
+      const numbersWithOps = generateNumbersWithOperators(5, 2, ['-']);
+      expect(numbersWithOps[0].operator).toBe('+');
     });
   });
 }); 
