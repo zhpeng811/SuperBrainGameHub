@@ -206,7 +206,11 @@
       },
       "rapidCalculation": {
         "title": "速算",
-        "description": "通过计算短暂显示的数字来测试你的计算速度。"
+        "description": "通过计算短暂显示的数字来测试您的计算速度。"
+      },
+      "rotatingSudoku": {
+        "title": "旋转数独",
+        "description": "解决带有旋转变化的数独谜题 - 旋转棋盘的各个部分！"
       }
     }
   },
@@ -228,5 +232,29 @@
     "selectFromOptions": "从 {count} 个选项中选择",
     "difficultyWas": "难度：{count} 个二维码",
     "hoverToEnlarge": "将鼠标悬停在二维码上可以放大查看"
+  },
+  "rotatingSudoku": {
+    "title": "旋转数独",
+    "subtitle": "解决带有旋转变化的数独谜题 - 你可以旋转棋盘的各个部分！",
+    "newGame": "新游戏",
+    "validate": "验证解答",
+    "clear": "清空棋盘",
+    "valid": "有效的解答！做得好！",
+    "invalid": "无效的解答。继续尝试！",
+    "keyboardInstructions": "使用键盘数字1-9输入数值。双击单元格或按Delete/Backspace键清除。",
+    "showHints": "显示提示",
+    "hideHints": "隐藏提示",
+    "hintsActive": "提示模式已激活：正确的数字显示为绿色，错误的显示为红色。带有橙色边框的区块需要旋转。",
+    "difficulty": "难度",
+    "easy": "简单",
+    "medium": "中等",
+    "hard": "困难",
+    "howToPlay": "游戏玩法",
+    "instructions": {
+      "sudokuRules": "填充网格，使每行、每列和每个3x3方格都包含不重复的1-9数字。",
+      "rotation": "点击旋转按钮，按顺时针顺序旋转相邻的4个子网格。",
+      "complete": "通过在所有空白单元格中填入正确的数字来完成谜题。",
+      "strategy": "策略性地使用旋转功能来解决这个独特的数独变种！"
+    }
   }
 } 

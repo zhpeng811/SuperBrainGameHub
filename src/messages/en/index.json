@@ -207,6 +207,10 @@
       "rapidCalculation": {
         "title": "Rapid Calculation",
         "description": "Test your calculation speed by adding numbers that appear briefly."
+      },
+      "rotatingSudoku": {
+        "title": "Rotating Sudoku",
+        "description": "Solve Sudoku puzzles with a twist - rotate sections of the board!"
       }
     }
   },
@@ -228,5 +232,29 @@
     "selectFromOptions": "Select from {count} options",
     "difficultyWas": "Difficulty: {count} QR codes",
     "hoverToEnlarge": "Hover over any QR code to enlarge it"
+  },
+  "rotatingSudoku": {
+    "title": "Rotating Sudoku",
+    "subtitle": "Solve the Sudoku puzzle with a twist - you can rotate sections of the board!",
+    "newGame": "New Game",
+    "validate": "Validate Solution",
+    "clear": "Clear Board",
+    "valid": "Valid solution! Well done!",
+    "invalid": "Invalid solution. Keep trying!",
+    "keyboardInstructions": "Use keyboard numbers 1-9 to input values. Double-click a cell or press Delete/Backspace to clear it.",
+    "showHints": "Show Hints",
+    "hideHints": "Hide Hints",
+    "hintsActive": "Hint mode active: Correct numbers are shown in green, incorrect in red. Subgrids with orange borders need to be rotated.",
+    "difficulty": "Difficulty",
+    "easy": "Easy",
+    "medium": "Medium",
+    "hard": "Hard",
+    "howToPlay": "How to Play",
+    "instructions": {
+      "sudokuRules": "Fill the grid so that every row, column, and 3x3 box contains the numbers 1-9 without repetition.",
+      "rotation": "Click the rotation buttons to rotate the adjacent 4 subgrids in clockwise order.",
+      "complete": "Complete the puzzle by filling in all empty cells with the correct numbers.",
+      "strategy": "Use rotation strategically to solve this unique Sudoku variant!"
+    }
   }
 } 
