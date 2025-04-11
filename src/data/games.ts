@@ -44,6 +44,13 @@ export const games: GameCardProps[] = [
     link: '/games/qr-code-memory',
   },
   {
+    id: 'rotatingSudoku',
+    title: 'Rotating Sudoku',
+    description: 'Solve Sudoku puzzles with a twist - rotate sections of the board!',
+    imageUrl: '/placeholder-game.jpg',
+    link: '/games/rotating-sudoku',
+  },
+  {
     id: 'memoryMatch',
     title: 'Memory Match',
     description: 'Test your memory by matching pairs of cards.',
