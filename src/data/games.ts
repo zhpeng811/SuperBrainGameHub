@@ -47,7 +47,7 @@ export const games: GameCardProps[] = [
     id: 'rotatingSudoku',
     title: 'Rotating Sudoku',
     description: 'Solve Sudoku puzzles with a twist - rotate sections of the board!',
-    imageUrl: '/placeholder-game.jpg',
+    imageUrl: '/rotating-sudoku.png',
     link: '/games/rotating-sudoku',
   },
   {
